@@ -34,4 +34,25 @@ describe("toObjectAsync", () => {
             expect(key).toBe(`Key_${ value }`)
         }
     })
+
+    itEnumerableAsync("with value selector", async (asEnumerable) => {
+        const object: Record<string, string> = await asEnumerable([1, 2, 3])
+            .toObjectAsync(async (x) => `Key_${ x }`, async (x) => `Value_${ x }`)
+
+        expect(object).toEqual({ Key_1: "Value_1", Key_2: "Value_2", Key_3: "Value_3" })
+    })
+
+    itAsync("with value selector", async () => {
+        const object: Record<string, string> = await asAsync([1, 2, 3])
+            .toObjectAsync(async (x) => `Key_${ x }`, async (x) => `Value_${ x }`)
+
+        expect(object).toEqual({ Key_1: "Value_1", Key_2: "Value_2", Key_3: "Value_3" })
+    })
+
+    itParallel("with value selector", async (asParallel) => {
+        const object: Record<string, string> = await asParallel([1, 2, 3])
+            .toObjectAsync(async (x) => `Key_${ x }`, async (x) => `Value_${ x }`)
+
+        expect(object).toEqual({ Key_1: "Value_1", Key_2: "Value_2", Key_3: "Value_3" })
+    })
 })

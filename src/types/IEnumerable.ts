@@ -757,10 +757,28 @@ export interface IEnumerable<TSource> extends Iterable<TSource> {
     toObject<TKey extends keyof any>(selector: (x: TSource) => TKey): Record<TKey, TSource>
     /**
      * Converts the Iteration to an Object. Duplicate values will be overriden.
+     * @param selector A function to determine the Key based on the value.
+     * @param valueSelector A function to determine the Value stored under each Key.
+     * @returns KVP Object
+     */
+    toObject<TKey extends keyof any, TValue>(
+            selector: (x: TSource) => TKey,
+            valueSelector: (x: TSource) => TValue): Record<TKey, TValue>
+    /**
+     * Converts the Iteration to an Object. Duplicate values will be overriden.
      * @param selector An async function to determine the Key based on the value.
      * @returns KVP Object
      */
     toObjectAsync<TKey extends keyof any>(selector: (x: TSource) => Promise<TKey>): Promise<Record<TKey, TSource>>
+    /**
+     * Converts the Iteration to an Object. Duplicate values will be overriden.
+     * @param selector An async function to determine the Key based on the value.
+     * @param valueSelector An async function to determine the Value stored under each Key.
+     * @returns Promise of KVP Object
+     */
+    toObjectAsync<TKey extends keyof any, TValue>(
+            selector: (x: TSource) => Promise<TKey>,
+            valueSelector: (x: TSource) => Promise<TValue>): Promise<Record<TKey, TValue>>
     /**
      * Converts the iteration to a Set
      * @returns Set containing the iteration values
